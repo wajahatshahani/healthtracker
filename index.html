@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HealthTracker</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            box-sizing: border-box;
+        }
+        .fade-in {
+            animation: fadeIn 0.3s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-green-50 min-h-full font-sans">
+    <div class="min-h-full">
+        <!-- Header -->
+        <header class="bg-white shadow-lg border-b-4 border-blue-500">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center py-6">
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 bg-gradient-to-r from-blue-500 to-green-500 rounded-full flex items-center justify-center mr-3">
+                            <span class="text-white font-bold text-lg">❤️</span>
+                        </div>
+                        <h1 class="text-3xl font-bold text-gray-800">HealthTracker Pro</h1>
+                    </div>
+                    <div class="text-sm text-gray-600 text-right">
+                        <span id="currentDate"></span>
+                        <div class="text-xs text-gray-500 mt-1">© 2024 wajahataleeofficial</div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="bg-white shadow-sm border-b">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex space-x-8 py-4">
+                    <button onclick="showSection('dashboard')" class="nav-btn px-4 py-2 rounded-lg font-medium transition-colors bg-blue-100 text-blue-700">Dashboard</button>
+                    <button onclick="showSection('vitals')" class="nav-btn px-4 py-2 rounded-lg font-medium transition-colors text-gray-600 hover:text-blue-700 hover:bg-blue-50">Vitals</button>
+                    <button onclick="showSection('fitness')" class="nav-btn px-4 py-2 rounded-lg font-medium transition-colors text-gray-600 hover:text-blue-700 hover:bg-blue-50">Fitness</button>
+                    <button onclick="showSection('nutrition')" class="nav-btn px-4 py-2 rounded-lg font-medium transition-colors text-gray-600 hover:text-blue-700 hover:bg-blue-50">Nutrition</button>
+                    <button onclick="showSection('sleep')" class="nav-btn px-4 py-2 rounded-lg font-medium transition-colors text-gray-600 hover:text-blue-700 hover:bg-blue-50">Sleep</button>
+                    <button onclick="showSection('ai-assistant')" class="nav-btn px-4 py-2 rounded-lg font-medium transition-colors text-gray-600 hover:text-blue-700 hover:bg-blue-50">🤖 AI Assistant</button>
+                </div>
+            </div>
+        </nav>
+
+        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <!-- Dashboard Section -->
+            <div id="dashboard" class="section fade-in">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6">Health Dashboard</h2>
+                
+                <!-- Quick Stats -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    <div class="bg-white rounded-xl shadow-lg p-6 border-l-4 border-red-500">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm font-medium text-gray-600">Heart Rate</p>
+                                <p class="text-2xl font-bold text-gray-900" id="dashHeartRate">-- bpm</p>
+                            </div>
+                            <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
+                                <span class="text-red-600 text-xl">💓</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl shadow-lg p-6 border-l-4 border-blue-500">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm font-medium text-gray-600">Steps Today</p>
+                                <p class="text-2xl font-bold text-gray-900" id="dashSteps">0</p>
+                            </div>
+                            <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                                <span class="text-blue-600 text-xl">👟</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl shadow-lg p-6 border-l-4 border-green-500">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm font-medium text-gray-600">Calories</p>
+                                <p class="text-2xl font-bold text-gray-900" id="dashCalories">0</p>
+                            </div>
+                            <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                                <span class="text-green-600 text-xl">🔥</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl shadow-lg p-6 border-l-4 border-purple-500">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm font-medium text-gray-600">Sleep</p>
+                                <p class="text-2xl font-bold text-gray-900" id="dashSleep">0h 0m</p>
+                            </div>
+                            <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
+                                <span class="text-purple-600 text-xl">😴</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Recent Activity</h3>
+                    <div id="recentActivity" class="space-y-3">
+                        <p class="text-gray-500 text-center py-8">No recent activity. Start tracking your health!</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Vitals Section -->
+            <div id="vitals" class="section hidden">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6">Vital Signs</h2>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- Blood Pressure -->
+                    <div class="bg-white rounded-xl shadow-lg p-6">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Blood Pressure</h3>
+                        <form onsubmit="addVital(event, 'bp')" class="space-y-4">
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label for="systolic" class="block text-sm font-medium text-gray-700 mb-1">Systolic</label>
+                                    <input type="number" id="systolic" name="systolic" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="120" required>
+                                </div>
+                                <div>
+                                    <label for="diastolic" class="block text-sm font-medium text-gray-700 mb-1">Diastolic</label>
+                                    <input type="number" id="diastolic" name="diastolic" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="80" required>
+                                </div>
+                            </div>
+                            <button type="submit" class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors font-medium">Record Blood Pressure</button>
+                        </form>
+                        <div id="bpHistory" class="mt-4 space-y-2"></div>
+                    </div>
+
+                    <!-- Heart Rate -->
+                    <div class="bg-white rounded-xl shadow-lg p-6">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Heart Rate</h3>
+                        <form onsubmit="addVital(event, 'hr')" class="space-y-4">
+                            <div>
+                                <label for="heartRate" class="block text-sm font-medium text-gray-700 mb-1">Heart Rate (bpm)</label>
+                                <input type="number" id="heartRate" name="heartRate" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="72" required>
+                            </div>
+                            <button type="submit" class="w-full bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 transition-colors font-medium">Record Heart Rate</button>
+                        </form>
+                        <div id="hrHistory" class="mt-4 space-y-2"></div>
+                    </div>
+
+                    <!-- Weight -->
+                    <div class="bg-white rounded-xl shadow-lg p-6">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Weight</h3>
+                        <form onsubmit="addVital(event, 'weight')" class="space-y-4">
+                            <div>
+                                <label for="weight" class="block text-sm font-medium text-gray-700 mb-1">Weight (lbs)</label>
+                                <input type="number" id="weight" name="weight" step="0.1" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="150.0" required>
+                            </div>
+                            <button type="submit" class="w-full bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition-colors font-medium">Record Weight</button>
+                        </form>
+                        <div id="weightHistory" class="mt-4 space-y-2"></div>
+                    </div>
+
+                    <!-- Temperature -->
+                    <div class="bg-white rounded-xl shadow-lg p-6">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Body Temperature</h3>
+                        <form onsubmit="addVital(event, 'temp')" class="space-y-4">
+                            <div>
+                                <label for="temperature" class="block text-sm font-medium text-gray-700 mb-1">Temperature (°F)</label>
+                                <input type="number" id="temperature" name="temperature" step="0.1" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="98.6" required>
+                            </div>
+                            <button type="submit" class="w-full bg-orange-600 text-white py-2 px-4 rounded-lg hover:bg-orange-700 transition-colors font-medium">Record Temperature</button>
+                        </form>
+                        <div id="tempHistory" class="mt-4 space-y-2"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fitness Section -->
+            <div id="fitness" class="section hidden">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6">Fitness Tracking</h2>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- Exercise Log -->
+                    <div class="bg-white rounded-xl shadow-lg p-6">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Exercise Log</h3>
+                        <form onsubmit="addExercise(event)" class="space-y-4">
+                            <div>
+                                <label for="exerciseType" class="block text-sm font-medium text-gray-700 mb-1">Exercise Type</label>
+                                <select id="exerciseType" name="exerciseType" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+                                    <option value="">Select exercise</option>
+                                    <option value="Running">Running</option>
+                                    <option value="Walking">Walking</option>
+                                    <option value="Cycling">Cycling</option>
+                                    <option value="Swimming">Swimming</option>
+                                    <option value="Weight Training">Weight Training</option>
+                                    <option value="Yoga">Yoga</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label for="duration" class="block text-sm font-medium text-gray-700 mb-1">Duration (minutes)</label>
+                                    <input type="number" id="duration" name="duration" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="30" required>
+                                </div>
+                                <div>
+                                    <label for="calories" class="block text-sm font-medium text-gray-700 mb-1">Calories Burned</label>
+                                    <input type="number" id="calories" name="calories" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="200">
+                                </div>
+                            </div>
+                            <button type="submit" class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors font-medium">Log Exercise</button>
+                        </form>
+                        <div id="exerciseHistory" class="mt-4 space-y-2"></div>
+                    </div>
+
+                    <!-- Steps Counter -->
+                    <div class="bg-white rounded-xl shadow-lg p-6">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Daily Steps</h3>
+                        <div class="text-center mb-6">
+                            <div class="w-32 h-32 mx-auto bg-gradient-to-r from-blue-500 to-green-500 rounded-full flex items-center justify-center mb-4 pulse-animation">
+                                <span class="text-white text-4xl font-bold" id="stepCount">0</span>
+                            </div>
+                            <p class="text-gray-600">Steps Today</p>
+                            <div class="w-full bg-gray-200 rounded-full h-2 mt-4">
+                                <div id="stepProgress" class="bg-gradient-to-r from-blue-500 to-green-500 h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
+                            </div>
+                            <p class="text-sm text-gray-500 mt-2">Goal: 10,000 steps</p>
+                        </div>
+                        <form onsubmit="addSteps(event)" class="space-y-4">
+                            <div>
+                                <label for="steps" class="block text-sm font-medium text-gray-700 mb-1">Add Steps</label>
+                                <input type="number" id="steps" name="steps" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="1000" required>
+                            </div>
+                            <button type="submit" class="w-full bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition-colors font-medium">Add Steps</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Nutrition Section -->
+            <div id="nutrition" class="section hidden">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6">Nutrition Tracking</h2>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- Food Log -->
+                    <div class="bg-white rounded-xl shadow-lg p-6">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Food Log</h3>
+                        <form onsubmit="addFood(event)" class="space-y-4">
+                            <div>
+                                <label for="foodName" class="block text-sm font-medium text-gray-700 mb-1">Food Item</label>
+                                <input type="text" id="foodName" name="foodName" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Apple" required>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label for="foodCalories" class="block text-sm font-medium text-gray-700 mb-1">Calories</label>
+                                    <input type="number" id="foodCalories" name="foodCalories" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="95" required>
+                                </div>
+                                <div>
+                                    <label for="mealType" class="block text-sm font-medium text-gray-700 mb-1">Meal</label>
+                                    <select id="mealType" name="mealType" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+                                        <option value="">Select meal</option>
+                                        <option value="Breakfast">Breakfast</option>
+                                        <option value="Lunch">Lunch</option>
+                                        <option value="Dinner">Dinner</option>
+                                        <option value="Snack">Snack</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button type="submit" class="w-full bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition-colors font-medium">Log Food</button>
+                        </form>
+                        <div id="foodHistory" class="mt-4 space-y-2"></div>
+                    </div>
+
+                    <!-- Water Intake -->
+                    <div class="bg-white rounded-xl shadow-lg p-6">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Water Intake</h3>
+                        <div class="text-center mb-6">
+                            <div class="w-24 h-32 mx-auto bg-gradient-to-t from-blue-500 to-blue-200 rounded-lg relative overflow-hidden mb-4">
+                                <div id="waterLevel" class="absolute bottom-0 left-0 right-0 bg-blue-600 transition-all duration-500" style="height: 0%"></div>
+                                <div class="absolute inset-0 flex items-center justify-center">
+                                    <span class="text-white font-bold text-lg" id="waterCount">0</span>
+                                </div>
+                            </div>
+                            <p class="text-gray-600">Glasses Today</p>
+                            <p class="text-sm text-gray-500">Goal: 8 glasses</p>
+                        </div>
+                        <form onsubmit="addWater(event)" class="space-y-4">
+                            <div>
+                                <label for="waterGlasses" class="block text-sm font-medium text-gray-700 mb-1">Glasses of Water</label>
+                                <input type="number" id="waterGlasses" name="waterGlasses" min="1" max="10" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="1" required>
+                            </div>
+                            <button type="submit" class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors font-medium">Add Water</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sleep Section -->
+            <div id="sleep" class="section hidden">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6">Sleep Tracking</h2>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- Sleep Log -->
+                    <div class="bg-white rounded-xl shadow-lg p-6">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Sleep Log</h3>
+                        <form onsubmit="addSleep(event)" class="space-y-4">
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label for="bedtime" class="block text-sm font-medium text-gray-700 mb-1">Bedtime</label>
+                                    <input type="time" id="bedtime" name="bedtime" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+                                </div>
+                                <div>
+                                    <label for="wakeup" class="block text-sm font-medium text-gray-700 mb-1">Wake Up Time</label>
+                                    <input type="time" id="wakeup" name="wakeup" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+                                </div>
+                            </div>
+                            <div>
+                                <label for="sleepQuality" class="block text-sm font-medium text-gray-700 mb-1">Sleep Quality</label>
+                                <select id="sleepQuality" name="sleepQuality" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+                                    <option value="">Rate your sleep</option>
+                                    <option value="Excellent">😴 Excellent</option>
+                                    <option value="Good">😊 Good</option>
+                                    <option value="Fair">😐 Fair</option>
+                                    <option value="Poor">😞 Poor</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="w-full bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700 transition-colors font-medium">Log Sleep</button>
+                        </form>
+                        <div id="sleepHistory" class="mt-4 space-y-2"></div>
+                    </div>
+
+                    <!-- Sleep Stats -->
+                    <div class="bg-white rounded-xl shadow-lg p-6">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Sleep Statistics</h3>
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-center p-4 bg-purple-50 rounded-lg">
+                                <span class="text-gray-700">Average Sleep Duration</span>
+                                <span class="font-semibold text-purple-700" id="avgSleep">-- hours</span>
+                            </div>
+                            <div class="flex justify-between items-center p-4 bg-blue-50 rounded-lg">
+                                <span class="text-gray-700">Last Night's Sleep</span>
+                                <span class="font-semibold text-blue-700" id="lastSleep">-- hours</span>
+                            </div>
+                            <div class="flex justify-between items-center p-4 bg-green-50 rounded-lg">
+                                <span class="text-gray-700">Sleep Goal</span>
+                                <span class="font-semibold text-green-700">8 hours</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI Assistant Section -->
+            <div id="ai-assistant" class="section hidden">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6">🤖 AI Health Assistant</h2>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <!-- Chat Interface -->
+                    <div class="lg:col-span-2 bg-white rounded-xl shadow-lg p-6">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Chat with Your Health Assistant</h3>
+                        
+                        <div id="chatMessages" class="h-96 overflow-y-auto border border-gray-200 rounded-lg p-4 mb-4 space-y-3">
+                            <div class="flex items-start space-x-3">
+                                <div class="w-8 h-8 bg-gradient-to-r from-blue-500 to-green-500 rounded-full flex items-center justify-center">
+                                    <span class="text-white text-sm">🤖</span>
+                                </div>
+                                <div class="bg-blue-50 rounded-lg p-3 max-w-md">
+                                    <p class="text-gray-800">Hello! I'm your AI Health Assistant. I can help you with health tips, analyze your data, and provide personalized suggestions. What would you like to know?</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <form onsubmit="sendMessage(event)" class="flex space-x-2">
+                            <input type="text" id="userMessage" placeholder="Ask me about your health, nutrition, fitness..." class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+                            <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium">Send</button>
+                        </form>
+                    </div>
+
+                    <!-- Quick Suggestions -->
+                    <div class="space-y-6">
+                        <!-- Health Insights -->
+                        <div class="bg-white rounded-xl shadow-lg p-6">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-4">💡 Health Insights</h3>
+                            <div id="healthInsights" class="space-y-3">
+                                <div class="p-3 bg-green-50 rounded-lg border-l-4 border-green-500">
+                                    <p class="text-sm text-green-800">Great job on staying hydrated! Keep up the good work.</p>
+                                </div>
+                                <div class="p-3 bg-yellow-50 rounded-lg border-l-4 border-yellow-500">
+                                    <p class="text-sm text-yellow-800">Try to get more sleep tonight. Aim for 7-9 hours.</p>
+                                </div>
+                                <div class="p-3 bg-blue-50 rounded-lg border-l-4 border-blue-500">
+                                    <p class="text-sm text-blue-800">Consider adding more cardio to your routine.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Quick Actions -->
+                        <div class="bg-white rounded-xl shadow-lg p-6">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-4">⚡ Quick Questions</h3>
+                            <div class="space-y-2">
+                                <button onclick="askQuickQuestion('How can I improve my sleep quality?')" class="w-full text-left p-3 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors text-sm">
+                                    How can I improve my sleep quality?
+                                </button>
+                                <button onclick="askQuickQuestion('What exercises are best for weight loss?')" class="w-full text-left p-3 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors text-sm">
+                                    What exercises are best for weight loss?
+                                </button>
+                                <button onclick="askQuickQuestion('Analyze my recent health data')" class="w-full text-left p-3 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors text-sm">
+                                    Analyze my recent health data
+                                </button>
+                                <button onclick="askQuickQuestion('Give me healthy meal suggestions')" class="w-full text-left p-3 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors text-sm">
+                                    Give me healthy meal suggestions
+                                </button>
+                                <button onclick="askQuickQuestion('How much water should I drink daily?')" class="w-full text-left p-3 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors text-sm">
+                                    How much water should I drink daily?
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Health Score -->
+                        <div class="bg-white rounded-xl shadow-lg p-6">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-4">📊 Health Score</h3>
+                            <div class="text-center">
+                                <div class="w-24 h-24 mx-auto bg-gradient-to-r from-green-400 to-blue-500 rounded-full flex items-center justify-center mb-3">
+                                    <span class="text-white text-2xl font-bold" id="healthScore">85</span>
+                                </div>
+                                <p class="text-gray-600 text-sm">Overall Health Score</p>
+                                <div class="mt-3 text-xs text-gray-500">
+                                    Based on your recent activity, sleep, and nutrition data
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Data storage
+        let healthData = {
+            vitals: {
+                bp: [],
+                hr: [],
+                weight: [],
+                temp: []
+            },
+            fitness: {
+                exercises: [],
+                steps: 0
+            },
+            nutrition: {
+                foods: [],
+                water: 0
+            },
+            sleep: []
+        };
+
+        // Initialize app
+        document.addEventListener('DOMContentLoaded', function() {
+            updateCurrentDate();
+            loadData();
+            updateDashboard();
+        });
+
+        function updateCurrentDate() {
+            const now = new Date();
+            const options = { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            };
+            document.getElementById('currentDate').textContent = now.toLocaleDateString('en-US', options);
+        }
+
+        function showSection(sectionName) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.add('hidden');
+            });
+            
+            // Show selected section
+            document.getElementById(sectionName).classList.remove('hidden');
+            document.getElementById(sectionName).classList.add('fade-in');
+            
+            // Update navigation
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('bg-blue-100', 'text-blue-700');
+                btn.classList.add('text-gray-600');
+            });
+            
+            event.target.classList.add('bg-blue-100', 'text-blue-700');
+            event.target.classList.remove('text-gray-600');
+        }
+
+        function addVital(event, type) {
+            event.preventDefault();
+            const form = event.target;
+            const timestamp = new Date().toLocaleString();
+            
+            let entry = { timestamp };
+            
+            if (type === 'bp') {
+                entry.systolic = parseInt(form.systolic.value);
+                entry.diastolic = parseInt(form.diastolic.value);
+                entry.display = `${entry.systolic}/${entry.diastolic} mmHg`;
+            } else if (type === 'hr') {
+                entry.value = parseInt(form.heartRate.value);
+                entry.display = `${entry.value} bpm`;
+            } else if (type === 'weight') {
+                entry.value = parseFloat(form.weight.value);
+                entry.display = `${entry.value} lbs`;
+            } else if (type === 'temp') {
+                entry.value = parseFloat(form.temperature.value);
+                entry.display = `${entry.value}°F`;
+            }
+            
+            healthData.vitals[type].push(entry);
+            form.reset();
+            updateVitalHistory(type);
+            updateDashboard();
+            saveData();
+            
+            showNotification(`${type.toUpperCase()} recorded successfully!`, 'success');
+        }
+
+        function updateVitalHistory(type) {
+            const historyDiv = document.getElementById(`${type}History`);
+            const data = healthData.vitals[type];
+            
+            if (data.length === 0) {
+                historyDiv.innerHTML = '<p class="text-gray-500 text-sm">No records yet</p>';
+                return;
+            }
+            
+            historyDiv.innerHTML = data.slice(-5).reverse().map(entry => 
+                `<div class="flex justify-between items-center p-2 bg-gray-50 rounded">
+                    <span class="font-medium">${entry.display}</span>
+                    <span class="text-sm text-gray-500">${entry.timestamp}</span>
+                </div>`
+            ).join('');
+        }
+
+        function addExercise(event) {
+            event.preventDefault();
+            const form = event.target;
+            
+            const exercise = {
+                type: form.exerciseType.value,
+                duration: parseInt(form.duration.value),
+                calories: parseInt(form.calories.value) || 0,
+                timestamp: new Date().toLocaleString()
+            };
+            
+            healthData.fitness.exercises.push(exercise);
+            form.reset();
+            updateExerciseHistory();
+            updateDashboard();
+            saveData();
+            
+            showNotification('Exercise logged successfully!', 'success');
+        }
+
+        function updateExerciseHistory() {
+            const historyDiv = document.getElementById('exerciseHistory');
+            const exercises = healthData.fitness.exercises;
+            
+            if (exercises.length === 0) {
+                historyDiv.innerHTML = '<p class="text-gray-500 text-sm">No exercises logged yet</p>';
+                return;
+            }
+            
+            historyDiv.innerHTML = exercises.slice(-5).reverse().map(exercise => 
+                `<div class="flex justify-between items-center p-2 bg-gray-50 rounded">
+                    <div>
+                        <span class="font-medium">${exercise.type}</span>
+                        <span class="text-sm text-gray-500 block">${exercise.duration} min • ${exercise.calories} cal</span>
+                    </div>
+                    <span class="text-sm text-gray-500">${exercise.timestamp}</span>
+                </div>`
+            ).join('');
+        }
+
+        function addSteps(event) {
+            event.preventDefault();
+            const form = event.target;
+            const steps = parseInt(form.steps.value);
+            
+            healthData.fitness.steps += steps;
+            form.reset();
+            updateStepsDisplay();
+            updateDashboard();
+            saveData();
+            
+            showNotification(`Added ${steps} steps!`, 'success');
+        }
+
+        function updateStepsDisplay() {
+            const stepCount = document.getElementById('stepCount');
+            const stepProgress = document.getElementById('stepProgress');
+            const steps = healthData.fitness.steps;
+            
+            stepCount.textContent = steps.toLocaleString();
+            
+            const progressPercent = Math.min((steps / 10000) * 100, 100);
+            stepProgress.style.width = `${progressPercent}%`;
+        }
+
+        function addFood(event) {
+            event.preventDefault();
+            const form = event.target;
+            
+            const food = {
+                name: form.foodName.value,
+                calories: parseInt(form.foodCalories.value),
+                meal: form.mealType.value,
+                timestamp: new Date().toLocaleString()
+            };
+            
+            healthData.nutrition.foods.push(food);
+            form.reset();
+            updateFoodHistory();
+            updateDashboard();
+            saveData();
+            
+            showNotification('Food logged successfully!', 'success');
+        }
+
+        function updateFoodHistory() {
+            const historyDiv = document.getElementById('foodHistory');
+            const foods = healthData.nutrition.foods;
+            
+            if (foods.length === 0) {
+                historyDiv.innerHTML = '<p class="text-gray-500 text-sm">No foods logged yet</p>';
+                return;
+            }
+            
+            historyDiv.innerHTML = foods.slice(-5).reverse().map(food => 
+                `<div class="flex justify-between items-center p-2 bg-gray-50 rounded">
+                    <div>
+                        <span class="font-medium">${food.name}</span>
+                        <span class="text-sm text-gray-500 block">${food.meal} • ${food.calories} cal</span>
+                    </div>
+                    <span class="text-sm text-gray-500">${food.timestamp}</span>
+                </div>`
+            ).join('');
+        }
+
+        function addWater(event) {
+            event.preventDefault();
+            const form = event.target;
+            const glasses = parseInt(form.waterGlasses.value);
+            
+            healthData.nutrition.water += glasses;
+            form.reset();
+            updateWaterDisplay();
+            saveData();
+            
+            showNotification(`Added ${glasses} glass${glasses > 1 ? 'es' : ''} of water!`, 'success');
+        }
+
+        function updateWaterDisplay() {
+            const waterCount = document.getElementById('waterCount');
+            const waterLevel = document.getElementById('waterLevel');
+            const water = healthData.nutrition.water;
+            
+            waterCount.textContent = water;
+            
+            const levelPercent = Math.min((water / 8) * 100, 100);
+            waterLevel.style.height = `${levelPercent}%`;
+        }
+
+        function addSleep(event) {
+            event.preventDefault();
+            const form = event.target;
+            
+            const bedtime = form.bedtime.value;
+            const wakeup = form.wakeup.value;
+            const quality = form.sleepQuality.value;
+            
+            // Calculate sleep duration
+            const bedDate = new Date(`2000-01-01 ${bedtime}`);
+            let wakeDate = new Date(`2000-01-01 ${wakeup}`);
+            
+            // If wake time is earlier than bedtime, assume next day
+            if (wakeDate < bedDate) {
+                wakeDate.setDate(wakeDate.getDate() + 1);
+            }
+            
+            const duration = (wakeDate - bedDate) / (1000 * 60 * 60); // hours
+            
+            const sleep = {
+                bedtime,
+                wakeup,
+                duration: duration.toFixed(1),
+                quality,
+                timestamp: new Date().toLocaleDateString()
+            };
+            
+            healthData.sleep.push(sleep);
+            form.reset();
+            updateSleepHistory();
+            updateSleepStats();
+            updateDashboard();
+            saveData();
+            
+            showNotification('Sleep logged successfully!', 'success');
+        }
+
+        function updateSleepHistory() {
+            const historyDiv = document.getElementById('sleepHistory');
+            const sleepData = healthData.sleep;
+            
+            if (sleepData.length === 0) {
+                historyDiv.innerHTML = '<p class="text-gray-500 text-sm">No sleep records yet</p>';
+                return;
+            }
+            
+            historyDiv.innerHTML = sleepData.slice(-5).reverse().map(sleep => 
+                `<div class="flex justify-between items-center p-2 bg-gray-50 rounded">
+                    <div>
+                        <span class="font-medium">${sleep.duration}h sleep</span>
+                        <span class="text-sm text-gray-500 block">${sleep.bedtime} - ${sleep.wakeup} • ${sleep.quality}</span>
+                    </div>
+                    <span class="text-sm text-gray-500">${sleep.timestamp}</span>
+                </div>`
+            ).join('');
+        }
+
+        function updateSleepStats() {
+            const sleepData = healthData.sleep;
+            
+            if (sleepData.length > 0) {
+                const avgSleep = sleepData.reduce((sum, sleep) => sum + parseFloat(sleep.duration), 0) / sleepData.length;
+                document.getElementById('avgSleep').textContent = `${avgSleep.toFixed(1)} hours`;
+                
+                const lastSleep = sleepData[sleepData.length - 1];
+                document.getElementById('lastSleep').textContent = `${lastSleep.duration} hours`;
+            }
+        }
+
+        function updateDashboard() {
+            // Update heart rate
+            const latestHR = healthData.vitals.hr.length > 0 ? 
+                healthData.vitals.hr[healthData.vitals.hr.length - 1].value : '--';
+            document.getElementById('dashHeartRate').textContent = latestHR === '--' ? '-- bpm' : `${latestHR} bpm`;
+            
+            // Update steps
+            document.getElementById('dashSteps').textContent = healthData.fitness.steps.toLocaleString();
+            
+            // Update calories
+            const totalCalories = healthData.nutrition.foods.reduce((sum, food) => sum + food.calories, 0);
+            document.getElementById('dashCalories').textContent = totalCalories.toLocaleString();
+            
+            // Update sleep
+            const latestSleep = healthData.sleep.length > 0 ? 
+                healthData.sleep[healthData.sleep.length - 1].duration : '0';
+            document.getElementById('dashSleep').textContent = latestSleep === '0' ? '0h 0m' : `${latestSleep}h`;
+            
+            // Update recent activity
+            updateRecentActivity();
+        }
+
+        function updateRecentActivity() {
+            const recentDiv = document.getElementById('recentActivity');
+            const activities = [];
+            
+            // Get recent activities from all categories
+            if (healthData.vitals.hr.length > 0) {
+                const latest = healthData.vitals.hr[healthData.vitals.hr.length - 1];
+                activities.push(`Heart rate recorded: ${latest.value} bpm`);
+            }
+            
+            if (healthData.fitness.exercises.length > 0) {
+                const latest = healthData.fitness.exercises[healthData.fitness.exercises.length - 1];
+                activities.push(`Exercise logged: ${latest.type} for ${latest.duration} minutes`);
+            }
+            
+            if (healthData.nutrition.foods.length > 0) {
+                const latest = healthData.nutrition.foods[healthData.nutrition.foods.length - 1];
+                activities.push(`Food logged: ${latest.name} (${latest.calories} cal)`);
+            }
+            
+            if (healthData.sleep.length > 0) {
+                const latest = healthData.sleep[healthData.sleep.length - 1];
+                activities.push(`Sleep logged: ${latest.duration} hours`);
+            }
+            
+            if (activities.length === 0) {
+                recentDiv.innerHTML = '<p class="text-gray-500 text-center py-8">No recent activity. Start tracking your health!</p>';
+            } else {
+                recentDiv.innerHTML = activities.slice(-3).map(activity => 
+                    `<div class="flex items-center p-3 bg-blue-50 rounded-lg">
+                        <div class="w-2 h-2 bg-blue-500 rounded-full mr-3"></div>
+                        <span class="text-gray-700">${activity}</span>
+                    </div>`
+                ).join('');
+            }
+        }
+
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.className = `fixed top-4 right-4 px-6 py-3 rounded-lg text-white font-medium z-50 ${
+                type === 'success' ? 'bg-green-500' : 'bg-red-500'
+            }`;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        function saveData() {
+            localStorage.setItem('healthTrackerData', JSON.stringify(healthData));
+        }
+
+        function loadData() {
+            const saved = localStorage.getItem('healthTrackerData');
+            if (saved) {
+                healthData = JSON.parse(saved);
+                
+                // Update all displays
+                updateStepsDisplay();
+                updateWaterDisplay();
+                updateSleepStats();
+                
+                // Update all histories
+                Object.keys(healthData.vitals).forEach(type => {
+                    updateVitalHistory(type);
+                });
+                updateExerciseHistory();
+                updateFoodHistory();
+                updateSleepHistory();
+                updateHealthInsights();
+                calculateHealthScore();
+            }
+        }
+
+        // AI Assistant Functions
+        function sendMessage(event) {
+            event.preventDefault();
+            const input = document.getElementById('userMessage');
+            const message = input.value.trim();
+            
+            if (!message) return;
+            
+            addMessageToChat(message, 'user');
+            input.value = '';
+            
+            // Simulate AI thinking
+            setTimeout(() => {
+                const response = generateAIResponse(message);
+                addMessageToChat(response, 'ai');
+            }, 1000);
+        }
+
+        function askQuickQuestion(question) {
+            document.getElementById('userMessage').value = question;
+            addMessageToChat(question, 'user');
+            
+            setTimeout(() => {
+                const response = generateAIResponse(question);
+                addMessageToChat(response, 'ai');
+            }, 1000);
+        }
+
+        function addMessageToChat(message, sender) {
+            const chatMessages = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            
+            if (sender === 'user') {
+                messageDiv.innerHTML = `
+                    <div class="flex items-start space-x-3 justify-end">
+                        <div class="bg-blue-600 text-white rounded-lg p-3 max-w-md">
+                            <p>${message}</p>
+                        </div>
+                        <div class="w-8 h-8 bg-gray-400 rounded-full flex items-center justify-center">
+                            <span class="text-white text-sm">👤</span>
+                        </div>
+                    </div>
+                `;
+            } else {
+                messageDiv.innerHTML = `
+                    <div class="flex items-start space-x-3">
+                        <div class="w-8 h-8 bg-gradient-to-r from-blue-500 to-green-500 rounded-full flex items-center justify-center">
+                            <span class="text-white text-sm">🤖</span>
+                        </div>
+                        <div class="bg-blue-50 rounded-lg p-3 max-w-md">
+                            <p class="text-gray-800">${message}</p>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function generateAIResponse(message) {
+            const lowerMessage = message.toLowerCase();
+            
+            // Analyze user's health data for personalized responses
+            const totalSteps = healthData.fitness.steps;
+            const totalCalories = healthData.nutrition.foods.reduce((sum, food) => sum + food.calories, 0);
+            const waterIntake = healthData.nutrition.water;
+            const avgSleep = healthData.sleep.length > 0 ? 
+                healthData.sleep.reduce((sum, sleep) => sum + parseFloat(sleep.duration), 0) / healthData.sleep.length : 0;
+
+            if (lowerMessage.includes('sleep')) {
+                if (avgSleep < 7) {
+                    return "I notice you're averaging less than 7 hours of sleep. Try establishing a bedtime routine: avoid screens 1 hour before bed, keep your room cool (65-68°F), and consider meditation or reading. Consistent sleep schedule is key!";
+                } else {
+                    return "Your sleep patterns look good! To maintain quality sleep, stick to your current schedule and consider adding some light stretching before bed.";
+                }
+            }
+            
+            if (lowerMessage.includes('exercise') || lowerMessage.includes('workout') || lowerMessage.includes('weight loss')) {
+                return "For effective weight loss, combine cardio (like brisk walking, running, or cycling) with strength training. Aim for 150 minutes of moderate cardio per week. Based on your current activity, try adding 10-15 minutes to your daily routine!";
+            }
+            
+            if (lowerMessage.includes('water') || lowerMessage.includes('hydration')) {
+                if (waterIntake < 6) {
+                    return "You should aim for 8 glasses of water daily. Try setting hourly reminders or keeping a water bottle nearby. Add lemon or cucumber for flavor if plain water feels boring!";
+                } else {
+                    return "Great hydration habits! Keep drinking water throughout the day. Your body needs about 8 glasses daily, and you're doing well!";
+                }
+            }
+            
+            if (lowerMessage.includes('meal') || lowerMessage.includes('nutrition') || lowerMessage.includes('food')) {
+                return "Here are some healthy meal ideas: Breakfast - Greek yogurt with berries and nuts; Lunch - Grilled chicken salad with mixed vegetables; Dinner - Baked salmon with quinoa and steamed broccoli. Focus on lean proteins, whole grains, and plenty of vegetables!";
+            }
+            
+            if (lowerMessage.includes('analyze') || lowerMessage.includes('data')) {
+                let analysis = "Based on your recent data: ";
+                
+                if (totalSteps < 5000) {
+                    analysis += "Try to increase your daily steps gradually. ";
+                } else if (totalSteps > 8000) {
+                    analysis += "Excellent step count! ";
+                }
+                
+                if (waterIntake >= 6) {
+                    analysis += "Good hydration levels. ";
+                } else {
+                    analysis += "Consider drinking more water. ";
+                }
+                
+                if (avgSleep >= 7) {
+                    analysis += "Your sleep duration looks healthy!";
+                } else {
+                    analysis += "Focus on getting more sleep for better recovery.";
+                }
+                
+                return analysis;
+            }
+            
+            if (lowerMessage.includes('heart rate') || lowerMessage.includes('blood pressure')) {
+                return "Regular monitoring of vital signs is great! For heart health, aim for 150 minutes of moderate exercise weekly, maintain a healthy diet low in sodium, and manage stress through relaxation techniques.";
+            }
+            
+            // Default responses
+            const defaultResponses = [
+                "That's a great question! For personalized health advice, I recommend consulting with your healthcare provider. I can help you track your data and provide general wellness tips.",
+                "I'm here to help with your health journey! Try logging more data so I can give you better insights. What specific area would you like to focus on?",
+                "Health is a journey, not a destination! Keep tracking your progress and making small, consistent improvements. What's your main health goal right now?",
+                "Remember, small changes lead to big results! Whether it's drinking more water, taking extra steps, or getting better sleep - every bit counts."
+            ];
+            
+            return defaultResponses[Math.floor(Math.random() * defaultResponses.length)];
+        }
+
+        function updateHealthInsights() {
+            const insights = document.getElementById('healthInsights');
+            const newInsights = [];
+            
+            // Generate insights based on data
+            if (healthData.nutrition.water >= 6) {
+                newInsights.push({
+                    type: 'success',
+                    message: 'Excellent hydration! You\'re meeting your daily water goals.'
+                });
+            } else {
+                newInsights.push({
+                    type: 'warning',
+                    message: 'Try to drink more water. Aim for 8 glasses daily.'
+                });
+            }
+            
+            if (healthData.fitness.steps >= 8000) {
+                newInsights.push({
+                    type: 'success',
+                    message: 'Great job staying active! You\'re exceeding step goals.'
+                });
+            } else if (healthData.fitness.steps > 0) {
+                newInsights.push({
+                    type: 'info',
+                    message: 'Keep moving! Try to add more steps to your daily routine.'
+                });
+            }
+            
+            const avgSleep = healthData.sleep.length > 0 ? 
+                healthData.sleep.reduce((sum, sleep) => sum + parseFloat(sleep.duration), 0) / healthData.sleep.length : 0;
+            
+            if (avgSleep < 7) {
+                newInsights.push({
+                    type: 'warning',
+                    message: 'Consider getting more sleep. Aim for 7-9 hours nightly.'
+                });
+            } else if (avgSleep >= 7) {
+                newInsights.push({
+                    type: 'success',
+                    message: 'Good sleep habits! Keep maintaining your schedule.'
+                });
+            }
+            
+            // Update insights display
+            insights.innerHTML = newInsights.map(insight => {
+                const colorClass = insight.type === 'success' ? 'green' : 
+                                 insight.type === 'warning' ? 'yellow' : 'blue';
+                return `
+                    <div class="p-3 bg-${colorClass}-50 rounded-lg border-l-4 border-${colorClass}-500">
+                        <p class="text-sm text-${colorClass}-800">${insight.message}</p>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function calculateHealthScore() {
+            let score = 0;
+            let factors = 0;
+            
+            // Steps factor (0-25 points)
+            if (healthData.fitness.steps > 0) {
+                score += Math.min((healthData.fitness.steps / 10000) * 25, 25);
+                factors++;
+            }
+            
+            // Water factor (0-25 points)
+            if (healthData.nutrition.water > 0) {
+                score += Math.min((healthData.nutrition.water / 8) * 25, 25);
+                factors++;
+            }
+            
+            // Sleep factor (0-25 points)
+            if (healthData.sleep.length > 0) {
+                const avgSleep = healthData.sleep.reduce((sum, sleep) => sum + parseFloat(sleep.duration), 0) / healthData.sleep.length;
+                score += Math.min((avgSleep / 8) * 25, 25);
+                factors++;
+            }
+            
+            // Exercise factor (0-25 points)
+            if (healthData.fitness.exercises.length > 0) {
+                const recentExercises = healthData.fitness.exercises.filter(ex => {
+                    const exerciseDate = new Date(ex.timestamp);
+                    const weekAgo = new Date();
+                    weekAgo.setDate(weekAgo.getDate() - 7);
+                    return exerciseDate > weekAgo;
+                });
+                score += Math.min(recentExercises.length * 5, 25);
+                factors++;
+            }
+            
+            // Calculate final score
+            const finalScore = factors > 0 ? Math.round(score / factors * 4) : 50;
+            document.getElementById('healthScore').textContent = Math.min(finalScore, 100);
+        }
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9948d171f739c908',t:'MTc2MTQ2OTgwMS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
